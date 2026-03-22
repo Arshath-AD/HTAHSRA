@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  server:
+    build: ./server
+    container_name: htahsra-server
+    ports:
+      - "7743:7743"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - NODE_ENV=production
+      - PORT=7743
+      - PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+    restart: unless-stopped
+    networks:
+      - htahsra-net
+
+  client:
+    build: ./client
+    container_name: htahsra-client
+    ports:
+      - "7742:80"
+    depends_on:
+      - server
+    restart: unless-stopped
+    networks:
+      - htahsra-net
+
+networks:
+  htahsra-net:
+    driver: bridge

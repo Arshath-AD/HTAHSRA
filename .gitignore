@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+
+# Data storage
+data/urls.json
+data/screenshots/
+
+# System
+.DS_Store
+Thumbs.db
