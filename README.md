@@ -29,3 +29,18 @@ A full-stack modern URL management command center designed to help you save, org
 
 ## Data Persistence
 All URLs, categories, and generated screenshots are persisted in the local `./data` directory on your host machine, ensuring your items are safe even across container restarts.
+
+site preview:
+
+![alt text](Preview/image.png)
+
+![alt text](Preview/image-1.png)
+
+![alt text](Preview/image-2.png)
+
+![alt text](Preview/image-3.png)
+
+feel free to reachout me 
+and if u encounter any issues or bugs please let me know
+
+use this if you want to 
