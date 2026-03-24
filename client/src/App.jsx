@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import AddUrl from './pages/AddUrl';
 import UrlDetail from './pages/UrlDetail';
+import UrlsList from './pages/UrlsList';
 import Cursor from './components/Cursor';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <AnimatePresence mode="wait">
                 <Routes>
                     <Route path="/" element={<Dashboard />} />
+                    <Route path="/all" element={<UrlsList />} />
                     <Route path="/add" element={<AddUrl />} />
                     <Route path="/url/:id" element={<UrlDetail />} />
                 </Routes>

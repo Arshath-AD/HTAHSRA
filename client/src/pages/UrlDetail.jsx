@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
     HiArrowLeft,
@@ -11,7 +11,7 @@ import {
     HiX,
     HiPlus
 } from 'react-icons/hi';
-import { BiGlobe, BiTime, BiCategory, BiInfoCircle } from 'react-icons/bi';
+import { BiGlobe, BiTime, BiCategory, BiInfoCircle, BiCopy } from 'react-icons/bi';
 import toast from 'react-hot-toast';
 import { urlsApi, getScreenshotUrl } from '../services/api';
 import { getDomain, formatDate, getStatusInfo, STATUS_OPTIONS } from '../utils/helpers';
@@ -24,29 +24,31 @@ import AddCategoryModal from '../components/AddCategoryModal';
 export default function UrlDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
     const { categories, fetchCategories } = useCategories();
 
     const [url, setUrl] = useState(null);
     const [loading, setLoading] = useState(true);
     const [editing, setEditing] = useState(false);
-    const [editForm, setEditForm] = useState({});
-    const [deleteModal, setDeleteModal] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [showAddCategory, setShowAddCategory] = useState(false);
     const [uploadingImage, setUploadingImage] = useState(false);
     const fileInputRef = useRef(null);
+
+    const [editForm, setEditForm] = useState({
+        title: '',
+        notes: '',
+        category: '',
+        status: 'revisit',
+        url: ''
+    });
+    const [deleteModal, setDeleteModal] = useState(false);
 
     const fetchUrl = async () => {
         try {
             setLoading(true);
             const { data } = await urlsApi.getById(id);
             setUrl(data.data);
-            setEditForm({
-                notes: data.data.notes,
-                category: data.data.category,
-                status: data.data.status,
-                title: data.data.title
-            });
         } catch (err) {
             toast.error('URL not found');
             navigate('/');
@@ -58,6 +60,24 @@ export default function UrlDetail() {
     useEffect(() => {
         fetchUrl();
     }, [id]);
+
+    useEffect(() => {
+        if (url) {
+            setEditForm({
+                title: url.title || '',
+                notes: url.notes || '',
+                category: categories.find(c => c.name === url.category)?.id || url.category || '',
+                status: url.status || 'revisit',
+                url: url.url || ''
+            });
+        }
+    }, [url, categories]);
+
+    useEffect(() => {
+        if (location.search.includes('edit=true')) {
+            setEditing(true);
+        }
+    }, [location]);
 
     // Auto-refresh for pending
     useEffect(() => {
@@ -305,14 +325,34 @@ export default function UrlDetail() {
                         ) : (
                             <h1>{url.title || getDomain(url.url)}</h1>
                         )}
-                        <a
-                            href={url.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="detail-url"
-                        >
-                            {url.url}
-                        </a>
+                        {editing ? (
+                            <input
+                                type="url"
+                                className="input"
+                                value={editForm.url}
+                                onChange={(e) => setEditForm(prev => ({ ...prev, url: e.target.value }))}
+                                style={{ color: 'var(--neon-cyan)', marginBottom: '8px' }}
+                                placeholder="https://..."
+                            />
+                        ) : (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <a
+                                    href={url.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="detail-url"
+                                >
+                                    {url.url}
+                                </a>
+                                <button
+                                    className="card-icon-btn"
+                                    onClick={() => { navigator.clipboard.writeText(url.url); toast.success('URL Copied! 📋'); }}
+                                    title="Copy URL"
+                                >
+                                    <BiCopy size={18} />
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </motion.div>
 

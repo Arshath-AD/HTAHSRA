@@ -1466,3 +1466,230 @@ select.input {
     gap: var(--space-sm);
   }
 }
+
+/* ============================================
+   CYBERPUNK STYLING
+   ============================================ */
+
+.cyberpunk-hero {
+  position: relative;
+  background: rgba(5, 5, 8, 0.8);
+  padding: 3.5rem 4rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  box-shadow:
+    0 0 15px rgba(0, 240, 255, 0.15),
+    inset 0 0 30px rgba(0, 240, 255, 0.05);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%);
+  overflow: hidden;
+  display: flex;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cyberpunk-hero::before {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 240, 255, 0.03) 50%),
+    linear-gradient(90deg, rgba(255, 0, 229, 0.02), rgba(57, 255, 20, 0.01), rgba(0, 240, 255, 0.02));
+  background-size: 100% 4px, 4px 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cyber-decorative-bars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: repeating-linear-gradient(90deg, var(--neon-cyan), var(--neon-cyan) 20px, transparent 20px, transparent 40px);
+  z-index: 2;
+  opacity: 0.5;
+}
+
+.hero-content-wrapper {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.hero-titles {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.cyber-greeting {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.highlight-yellow {
+  color: #fffb00;
+  text-shadow: 0 0 8px rgba(255, 251, 0, 0.6);
+}
+
+.cyber-title-glitch {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 4.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  position: relative;
+  color: white;
+  user-select: none;
+  -webkit-user-select: none;
+  margin: 0;
+  line-height: 1.1;
+  text-shadow: 0.05em 0 0 var(--neon-cyan), -0.05em -0.025em 0 var(--neon-magenta),
+    0.025em 0.05em 0 var(--neon-lime);
+  animation: cyber-glitch-anim 4s infinite;
+}
+
+@keyframes cyber-glitch-anim {
+  0% {
+    text-shadow: 0.05em 0 0 var(--neon-cyan), -0.05em -0.025em 0 var(--neon-magenta), 0.025em 0.05em 0 var(--neon-lime);
+  }
+
+  14% {
+    text-shadow: 0.05em 0 0 var(--neon-cyan), -0.05em -0.025em 0 var(--neon-magenta), 0.025em 0.05em 0 var(--neon-lime);
+  }
+
+  15% {
+    text-shadow: -0.05em -0.025em 0 var(--neon-cyan), 0.025em 0.025em 0 var(--neon-magenta), -0.05em -0.05em 0 var(--neon-lime);
+    transform: translate(1px, 1px);
+  }
+
+  49% {
+    text-shadow: -0.05em -0.025em 0 var(--neon-cyan), 0.025em 0.025em 0 var(--neon-magenta), -0.05em -0.05em 0 var(--neon-lime);
+    transform: translate(0px, 0px);
+  }
+
+  50% {
+    text-shadow: 0.025em 0.05em 0 var(--neon-cyan), 0.05em 0 0 var(--neon-magenta), 0 -0.05em 0 var(--neon-lime);
+  }
+
+  99% {
+    text-shadow: 0.025em 0.05em 0 var(--neon-cyan), 0.05em 0 0 var(--neon-magenta), 0 -0.05em 0 var(--neon-lime);
+  }
+
+  100% {
+    text-shadow: -0.025em 0 0 var(--neon-cyan), -0.025em -0.025em 0 var(--neon-magenta), -0.025em -0.05em 0 var(--neon-lime);
+  }
+}
+
+.cyber-subtext {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--neon-cyan);
+  margin-top: 1rem;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+/* Time Widget Panel */
+.hero-time-widget.cyber-panel {
+  background: rgba(10, 10, 15, 0.7);
+  border: 1px solid rgba(255, 0, 229, 0.5);
+  padding: 1.5rem 2rem;
+  clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+  position: relative;
+  text-align: right;
+  min-width: 280px;
+  box-shadow: inset 0 0 20px rgba(255, 0, 229, 0.15);
+  backdrop-filter: blur(8px);
+}
+
+.hero-time-widget.cyber-panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 50%;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.cyber-sys-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--neon-magenta);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 0, 229, 0.3);
+  padding-bottom: 0.5rem;
+}
+
+.digital-clock.cyber-glitch {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 3.2rem;
+  color: white;
+  text-shadow: 0 0 15px var(--neon-cyan), 0 0 30px var(--neon-cyan);
+  font-weight: 800;
+  margin: 0.5rem 0;
+  letter-spacing: 3px;
+}
+
+.date-display {
+  color: var(--neon-purple);
+  font-size: 1.1rem;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 4px;
+}
+
+/* Enhancing Cyber Stat Cards globally */
+.stat-card {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-left: 3px solid var(--neon-cyan);
+  border-radius: 0;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(15, 15, 18, 0.7);
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  border-left-color: var(--neon-magenta);
+  box-shadow: 0 15px 30px rgba(255, 0, 229, 0.15);
+  background: rgba(20, 20, 25, 0.9);
+}
+
+@media (max-width: 900px) {
+  .hero-content-wrapper {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 2rem;
+  }
+
+  .hero-time-widget.cyber-panel {
+    text-align: left;
+  }
+
+  .hero-time-widget.cyber-panel::after {
+    right: auto;
+    left: 0;
+    top: 0;
+    width: 20%;
+    height: 3px;
+  }
+
+  .cyber-title-glitch {
+    font-size: 3rem;
+  }
+}
