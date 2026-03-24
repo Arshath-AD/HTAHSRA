@@ -1,5 +1,20 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+const useTime = () => {
+    const [time, setTime] = useState(new Date());
+    useEffect(() => {
+        const timer = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(timer);
+    }, []);
+    return time;
+};
+
+const getGreeting = (hour) => {
+    if (hour < 12) return 'Good Morning';
+    if (hour < 18) return 'Good Afternoon';
+    return 'Good Evening';
+};
 import { motion } from 'framer-motion';
 import { HiPlus, HiSearch } from 'react-icons/hi';
 import { BiFilterAlt } from 'react-icons/bi';
@@ -15,6 +30,7 @@ export default function Dashboard() {
     const navigate = useNavigate();
     const { urls, loading, fetchUrls, filters, setFilters } = useUrls();
     const { categories } = useCategories();
+    const time = useTime();
 
     const [searchInput, setSearchInput] = useState('');
 
@@ -64,25 +80,43 @@ export default function Dashboard() {
         >
             <div className="container">
                 {/* Hero */}
-                <div className="dashboard-hero">
-                    <motion.h1
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, ease: 'easeOut' }}
-                    >
-                        <span className="neon-text logo-text">
-                            {'HTAHSRA'.split('').map((char, i) => (
-                                <span key={i} className="hover-char">{char}</span>
-                            ))}
-                        </span>
-                    </motion.h1>
-                    <motion.p
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
-                    >
-                        Your URL command center. Save, organize, and never forget why you were there.
-                    </motion.p>
+                <div className="cyberpunk-hero">
+                    <div className="cyber-scanlines"></div>
+                    <div className="cyber-decorative-bars"></div>
+
+                    <div className="hero-content-wrapper">
+                        <div className="hero-titles">
+                            <motion.div className="cyber-greeting" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+                                <span className="highlight-yellow">[ {getGreeting(time.getHours()).toUpperCase()} ]</span>
+                            </motion.div>
+
+                            <motion.h1 className="cyber-title-glitch" data-text="HTAHSRA" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                                {'HTAHSRA'.split('').map((char, i) => (
+                                    <span key={i} className="hover-char">{char}</span>
+                                ))}
+                            </motion.h1>
+
+                            <motion.p className="cyber-subtext" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+                                {'>'} SECURE_UPLINK_ESTABLISHED _ <br />
+                                {'>'} AWAITING_COMMAND_INPUT ...
+                            </motion.p>
+                        </div>
+
+                        <motion.div
+                            className="hero-time-widget cyber-panel"
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.8, type: 'spring' }}
+                        >
+                            <div className="cyber-sys-badge">SYS.TIME // ONLINE</div>
+                            <div className="digital-clock cyber-glitch" data-text={time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}>
+                                {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                            </div>
+                            <div className="date-display">
+                                {time.toLocaleDateString([], { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase()}
+                            </div>
+                        </motion.div>
+                    </div>
                 </div>
 
                 {/* Stats */}
@@ -172,11 +206,25 @@ export default function Dashboard() {
                         <p>Try adjusting your search or filters</p>
                     </motion.div>
                 ) : (
-                    <div className="url-grid">
-                        {urls.map((url, index) => (
-                            <UrlCard key={url.id} url={url} index={index} />
-                        ))}
-                    </div>
+                    <>
+                        <div className="url-grid">
+                            {urls.slice(0, 12).map((url, index) => (
+                                <UrlCard key={url.id} url={url} index={index} />
+                            ))}
+                        </div>
+                        {urls.length > 12 && (
+                            <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+                                <motion.button
+                                    className="btn btn-secondary"
+                                    onClick={() => navigate('/all')}
+                                    whileHover={{ scale: 1.05 }}
+                                    style={{ padding: '0.75rem 2rem', fontSize: '1.1rem', letterSpacing: '1px', border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}
+                                >
+                                    View all...
+                                </motion.button>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
 
