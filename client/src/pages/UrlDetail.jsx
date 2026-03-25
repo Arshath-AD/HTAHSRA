@@ -395,7 +395,7 @@ export default function UrlDetail() {
                             value={editForm.notes}
                             onChange={(e) => setEditForm(prev => ({ ...prev, notes: e.target.value }))}
                             rows={5}
-                            placeholder="Why did you save this URL? What were you doing?"
+                            placeholder="Why did you save this URL? What were you doing.....?"
                         />
                     ) : url.notes ? (
                         <div className="detail-notes">{url.notes}</div>
