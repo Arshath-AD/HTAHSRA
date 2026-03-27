@@ -102,7 +102,7 @@ export default function UrlsList() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                     >
-                        <div className="empty-state-icon">🔍</div>
+                        <div className="empty-state-icon"><HiSearch /></div>
                         <h2>No results found</h2>
                         <p>Try adjusting your search or filters</p>
                     </motion.div>

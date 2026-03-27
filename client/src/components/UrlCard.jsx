@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BiGlobe, BiCopy, BiEdit } from 'react-icons/bi';
+import { HiChatAlt2 } from 'react-icons/hi';
 import toast from 'react-hot-toast';
 import { getScreenshotUrl } from '../services/api';
 import { getDomain, timeAgo, getStatusInfo, truncate } from '../utils/helpers';
@@ -65,7 +66,7 @@ export default function UrlCard({ url, index = 0 }) {
                     <div className="url-card-actions" style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
                         <button
                             className="card-icon-btn"
-                            onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(url.url); toast.success('URL Copied! 📋'); }}
+                            onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(url.url); toast.success('URL Copied!'); }}
                             title="Copy URL"
                         >
                             <BiCopy size={16} />
@@ -89,7 +90,7 @@ export default function UrlCard({ url, index = 0 }) {
                 )}
 
                 {url.notes && (
-                    <p className="url-card-notes">💭 {truncate(url.notes, 60)}</p>
+                    <p className="url-card-notes"><HiChatAlt2 style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} />{truncate(url.notes, 60)}</p>
                 )}
 
                 <div className="url-card-footer">
