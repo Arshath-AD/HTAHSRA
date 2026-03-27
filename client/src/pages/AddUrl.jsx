@@ -111,7 +111,7 @@ export default function AddUrl() {
                 await urlsApi.uploadImage(newUrl.id, previewBase64);
             }
 
-            toast.success('URL saved! 🚀');
+            toast.success('URL saved!');
             navigate('/');
         } catch (err) {
             toast.error('Failed to save URL');

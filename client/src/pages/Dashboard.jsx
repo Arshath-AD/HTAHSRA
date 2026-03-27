@@ -23,6 +23,7 @@ import useCategories from '../hooks/useCategories';
 import UrlCard from '../components/UrlCard';
 import EmptyState from '../components/EmptyState';
 import Loader from '../components/Loader';
+import { CategoryPieChart, ActivityLineChart } from '../components/CyberCharts';
 import CustomDropdown from '../components/CustomDropdown';
 import { STATUS_OPTIONS } from '../utils/helpers';
 
@@ -119,6 +120,19 @@ export default function Dashboard() {
                     </div>
                 </div>
 
+                {/* Cyber Charts */}
+                {!isAbsoluteEmpty && (
+                    <motion.div
+                        className="cyber-charts-grid"
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                        <CategoryPieChart urls={urls} categories={categories} />
+                        <ActivityLineChart urls={urls} />
+                    </motion.div>
+                )}
+
                 {/* Stats */}
                 {!isAbsoluteEmpty && (
                     <motion.div
@@ -201,7 +215,7 @@ export default function Dashboard() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                     >
-                        <div className="empty-state-icon">🔍</div>
+                        <div className="empty-state-icon"><HiSearch /></div>
                         <h2>No results found</h2>
                         <p>Try adjusting your search or filters</p>
                     </motion.div>

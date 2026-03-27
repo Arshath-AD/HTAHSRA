@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { HiPlus } from 'react-icons/hi';
+import { HiPlus, HiLink } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 
 export default function EmptyState() {
@@ -12,7 +12,7 @@ export default function EmptyState() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
         >
-            <div className="empty-state-icon animate-float">🔗</div>
+            <div className="empty-state-icon animate-float"><HiLink /></div>
             <h2>No URLs saved yet</h2>
             <p>
                 Start saving URLs you want to remember. We'll capture metadata, screenshots,

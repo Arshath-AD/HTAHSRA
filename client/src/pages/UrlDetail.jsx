@@ -9,7 +9,9 @@ import {
     HiRefresh,
     HiSave,
     HiX,
-    HiPlus
+    HiPlus,
+    HiDocumentText,
+    HiTag
 } from 'react-icons/hi';
 import { BiGlobe, BiTime, BiCategory, BiInfoCircle, BiCopy } from 'react-icons/bi';
 import toast from 'react-hot-toast';
@@ -92,7 +94,7 @@ export default function UrlDetail() {
             const { data } = await urlsApi.update(id, editForm);
             setUrl(data.data);
             setEditing(false);
-            toast.success('Updated! ✨');
+            toast.success('Updated!');
         } catch (err) {
             toast.error('Failed to update');
         }
@@ -346,7 +348,7 @@ export default function UrlDetail() {
                                 </a>
                                 <button
                                     className="card-icon-btn"
-                                    onClick={() => { navigator.clipboard.writeText(url.url); toast.success('URL Copied! 📋'); }}
+                                    onClick={() => { navigator.clipboard.writeText(url.url); toast.success('URL Copied!'); }}
                                     title="Copy URL"
                                 >
                                     <BiCopy size={18} />
@@ -428,7 +430,7 @@ export default function UrlDetail() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.35 }}
                 >
-                    <h2>📝 Your Notes</h2>
+                    <h2><HiDocumentText className="icon-inline" /> Your Notes</h2>
                     {editing ? (
                         <textarea
                             className="input"
@@ -454,7 +456,7 @@ export default function UrlDetail() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 }}
                     >
-                        <h2>🏷️ Tags</h2>
+                        <h2><HiTag className="icon-inline" /> Tags</h2>
                         <div className="tags-container">
                             {url.tags.map(tag => (
                                 <span key={tag} className="tag">{tag}</span>
