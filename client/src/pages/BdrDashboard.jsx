@@ -1,10 +1,11 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { HiCheck, HiTrash, HiPencil, HiX, HiPlus, HiFire, HiCollection } from 'react-icons/hi';
 import { HiBolt } from 'react-icons/hi2';
 import { BsCalendarWeek, BsMoonFill } from 'react-icons/bs';
 import useTasks from '../hooks/useTasks';
-import { BdrRoutineBarChart, BdrTaskDistributionChart } from '../components/CyberCharts';
+import { BdrContributionHeatmap } from '../components/CyberCharts';
 
 const CADENCE_COLORS = { daily: '#00f0ff', weekly: '#ff00e5', monthly: '#39ff14' };
 const CADENCE_ICONS = {
@@ -134,72 +135,19 @@ function TaskRow({ task, section, onToggle, onDelete, onEdit, isCompleted, strea
     );
 }
 
-// ─── Add Task Form ────────────────────────────────────────────────────────────
-function AddTaskForm({ section, onAdd, defaultCadence }) {
-    const [open, setOpen] = useState(false);
-    const [title, setTitle] = useState('');
-    const [cadence, setCadence] = useState(defaultCadence || 'daily');
-    const [dueDate, setDueDate] = useState('');
-    const formRef = useRef(null);
-
-    // Listen for the navbar's "New Task" button to auto-open the adhoc form
-    useEffect(() => {
-        if (section !== 'adhoc') return;
-        const handler = () => {
-            setOpen(true);
-            setTimeout(() => formRef.current?.querySelector('input')?.focus(), 50);
-        };
-        document.addEventListener('bdr:new-task', handler);
-        return () => document.removeEventListener('bdr:new-task', handler);
-    }, [section]);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!title.trim()) return;
-        if (section === 'adhoc' && !dueDate) {
-            alert('Please select a due date or deadline for the ad-hoc task.');
-            return;
-        }
-        onAdd(section, title.trim(), cadence, section === 'adhoc' ? dueDate : null);
-        setTitle('');
-        setDueDate('');
-        setOpen(false);
-    };
-
-    if (!open) return (
-        <button className="bdr-add-inline-btn" onClick={() => setOpen(true)}><HiPlus /> Add task</button>
-    );
-
-    return (
-        <motion.form ref={formRef} className="bdr-add-form-inline" onSubmit={handleSubmit}
-            initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
-            <input className="bdr-edit-input" placeholder="Task title..." value={title} onChange={e => setTitle(e.target.value)} autoFocus />
-            {!defaultCadence && (
-                <select className="bdr-cadence-select" value={cadence} onChange={e => setCadence(e.target.value)}>
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
-                </select>
-            )}
-            {section === 'adhoc' && (
-                <input type="date" className="bdr-date-select" value={dueDate} onChange={e => setDueDate(e.target.value)} required />
-            )}
-            <button type="submit" className="bdr-icon-btn green"><HiCheck /></button>
-            <button type="button" className="bdr-icon-btn dimmed" onClick={() => setOpen(false)}><HiX /></button>
-        </motion.form>
-    );
-}
-
 // ─── Cadence Group ─────────────────────────────────────────────────────────────
 function CadenceGroup({ cadence, tasks, section, hooks }) {
     const color = CADENCE_COLORS[cadence];
     const filtered = tasks.filter(t => t.cadence === cadence);
     const done = filtered.filter(t => hooks.isCompleted(t.id, cadence)).length;
     return (
-        <div className="bdr-cadence-group">
-            <div className="bdr-cadence-header" style={{ borderColor: color }}>
+        <div className="bdr-cadence-group" style={{ borderTopColor: color, boxShadow: `0 8px 32px rgba(0,0,0,0.4), 0 0 0 0 ${color}00, inset 0 1px 0 rgba(255,255,255,0.04)` }}
+            onMouseEnter={e => e.currentTarget.style.boxShadow = `0 12px 40px rgba(0,0,0,0.5), 0 0 24px ${color}20, inset 0 1px 0 rgba(255,255,255,0.06)`}
+            onMouseLeave={e => e.currentTarget.style.boxShadow = `0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)`}
+        >
+            <div className="bdr-cadence-header">
                 <span className="bdr-cadence-title" style={{ color }}>{CADENCE_ICONS[cadence]} {cadence.charAt(0).toUpperCase() + cadence.slice(1)}</span>
-                {filtered.length > 0 && <span className="bdr-cadence-progress" style={{ color }}>{done}/{filtered.length}</span>}
+                {filtered.length > 0 && <span className="bdr-cadence-progress" style={{ color, borderColor: `${color}40` }}>{done}/{filtered.length}</span>}
             </div>
             <AnimatePresence>
                 {filtered.map(t => (
@@ -209,8 +157,7 @@ function CadenceGroup({ cadence, tasks, section, hooks }) {
                         streak={hooks.getTaskStreak(t.id)} isAdhoc={false} />
                 ))}
             </AnimatePresence>
-            <AddTaskForm section={section} onAdd={hooks.addTask} defaultCadence={cadence} />
-        </div>
+        </div >
     );
 }
 
@@ -229,9 +176,6 @@ function AdhocGroup({ tasks, hooks }) {
                         streak={0} isAdhoc={true} />
                 ))}
             </AnimatePresence>
-            <div style={{ marginTop: '0.5rem' }}>
-                <AddTaskForm section="adhoc" onAdd={hooks.addTask} />
-            </div>
         </div>
     );
 }
@@ -334,12 +278,13 @@ export default function BdrDashboard() {
                 {/* BDR Analytics */}
                 <motion.div
                     className="cyber-charts-grid"
+                    style={{ marginBottom: '3rem' }}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.1 }}
                 >
-                    <BdrRoutineBarChart stats={stats} />
-                    <BdrTaskDistributionChart hooks={hooks} />
+
+                    <BdrContributionHeatmap completions={hooks.completions} />
                 </motion.div>
 
                 {/* Routine Section */}
