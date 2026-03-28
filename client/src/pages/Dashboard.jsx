@@ -23,7 +23,7 @@ import useCategories from '../hooks/useCategories';
 import UrlCard from '../components/UrlCard';
 import EmptyState from '../components/EmptyState';
 import Loader from '../components/Loader';
-import { CategoryPieChart, ActivityLineChart } from '../components/CyberCharts';
+import { ActivityLineChart } from '../components/CyberCharts';
 import CustomDropdown from '../components/CustomDropdown';
 import { STATUS_OPTIONS } from '../utils/helpers';
 
@@ -120,19 +120,6 @@ export default function Dashboard() {
                     </div>
                 </div>
 
-                {/* Cyber Charts */}
-                {!isAbsoluteEmpty && (
-                    <motion.div
-                        className="cyber-charts-grid"
-                        initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        <CategoryPieChart urls={urls} categories={categories} />
-                        <ActivityLineChart urls={urls} />
-                    </motion.div>
-                )}
-
                 {/* Stats */}
                 {!isAbsoluteEmpty && (
                     <motion.div
@@ -161,6 +148,19 @@ export default function Dashboard() {
                             <div className="stat-card-value" style={{ color: 'var(--neon-purple)' }}>{revisitCount}</div>
                             <div className="stat-card-label">Revisit</div>
                         </div>
+                    </motion.div>
+                )}
+
+                {/* Cyber Charts */}
+                {!isAbsoluteEmpty && (
+                    <motion.div
+                        className="cyber-charts-grid"
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+
+                        <ActivityLineChart urls={urls} />
                     </motion.div>
                 )}
 

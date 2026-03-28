@@ -47,14 +47,19 @@ export default function Navbar() {
                         </>
                     )}
                     {isBdr && (
-                        <button
-                            className="btn btn-primary bdr-new-task-btn"
-                            onClick={() => document.dispatchEvent(new CustomEvent('bdr:new-task'))}
-                            id="nav-new-task"
-                        >
-                            <HiPlus />
-                            New Task
-                        </button>
+                        <>
+                            <div className="shortcut-container">
+                                <kbd className="shortcut-hint">Alt+Shift+T</kbd>
+                            </div>
+                            <button
+                                className="btn btn-primary bdr-new-task-btn"
+                                onClick={() => navigate('/bdr/add')}
+                                id="nav-new-task"
+                            >
+                                <HiPlus />
+                                New Task
+                            </button>
+                        </>
                     )}
                 </div>
             </div>
