@@ -41,6 +41,6 @@ site preview:
 ![alt text](Preview/image-3.png)
 
 feel free to reachout me 
-and if u encounter any issues or bugs please let me know
+and if you encounter any issues or bugs please let me know
 
 use this if you want to 
