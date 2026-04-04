@@ -1,4 +1,4 @@
-# HTAHSRA - URL Manager
+# HTAHSRA - (URL Manager)
 
 A full-stack modern URL management command center designed to help you save, organize, and never forget *why* you visited a webpage. Built with a sleek GenZ neon dark theme.
 
