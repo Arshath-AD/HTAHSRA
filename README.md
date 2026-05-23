@@ -50,5 +50,3 @@ site preview:
 
 feel free to reachout me 
 and if you encounter any issues or bugs please let me know
-
-use this if you want to 
