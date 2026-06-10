@@ -22,7 +22,7 @@ A full-stack modern URL management command center designed to help you save, org
 
 
 
-## Setup & Running:
+## Setup & Running Procedure:
 
 1. Ensure Docker is installed and running.
 2. In the project root, run:
